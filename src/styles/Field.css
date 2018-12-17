@@ -1,0 +1,127 @@
+.cells {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  cursor: pointer;
+  border: 2px solid black;
+}
+
+/* low line */
+#whiteHomeStart {
+  top: 565px;
+  left: 135px;
+}
+
+#cell1{
+  top: 565px;
+  left: 195px;
+}
+#cell2{
+  top: 565px;
+  left: 235px;
+}
+#cell3{
+  top: 565px;
+  left: 275px;
+}
+#cell4{
+  top: 565px;
+  left: 315px;
+}
+#cell5{
+  top: 565px;
+  left: 355px;
+}
+#cell6{
+  top: 565px;
+  left: 395px;
+}
+#cell7 {
+  top: 565px;
+  left: 495px;
+}
+#cell8 {
+  top: 565px;
+  left: 535px;
+}
+#cell9 {
+  top: 565px;
+  left: 575px;
+}
+#cell10 {
+  top: 565px;
+  left: 615px;
+}
+#cell11 {
+  top: 565px;
+  left: 655px;
+}
+#cell12 {
+  top: 565px;
+  left: 695px;
+}
+#blackHomeEnd {
+  top: 565px;
+  left: 755px;
+}
+
+/* height line */
+
+#blackHomeStart {
+  top: 10px;
+  left: 755px;
+}
+
+#cell13{
+  top: 10px;
+  left: 695px;
+}
+#cell14{
+  top: 10px;
+  left: 655px;
+}
+#cell15{
+  top: 10px;
+  left: 615px;
+}
+#cell16{
+  top: 10px;
+  left: 575px;
+}
+#cell17{
+  top: 10px;
+  left: 535px;
+}
+#cell18{
+  top: 10px;
+  left: 495px;
+}
+#cell19 {
+  top: 10px;
+  left: 395px;
+}
+#cell20 {
+  top: 10px;
+  left: 355px;
+}
+#cell21 {
+  top: 10px;
+  left: 315px;
+}
+#cell22 {
+  top: 10px;
+  left: 275px;
+}
+#cell23 {
+  top: 10px;
+  left: 235px;
+}
+#cell24 {
+  top: 10px;
+  left: 195px;
+}
+
+#whiteHomeEnd {
+  top: 10px;
+  left: 135px;
+}
