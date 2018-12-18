@@ -2,7 +2,7 @@ import React from 'react';
 import Dice from './components/Dice';
 import Styles from './App.css';
 import Field from './components/Field.jsx';
-//place comments
+//place comments when you open this file next tine 
 class App extends React.Component {
   constructor(){
     super();
