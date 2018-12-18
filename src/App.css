@@ -1,12 +1,18 @@
-/*
-for checkers
  .white {
   width: 35px;
   height: 35px;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  left: 135px;
   background-image: url(images/whiteChecker.png);
   background-repeat: no-repeat;
   background-size: contain;
-} */
+}
+ .black {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  left: 755px;
+  background-image: url(images/blackChecker.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
