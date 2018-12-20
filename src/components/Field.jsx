@@ -21,6 +21,7 @@ class Field extends React.Component {
       this.props.currentChecker.style.border = '';
       this.props.currentChecker.setAttribute ('data-location' , e.target.getAttribute('data-place'));
       this.props.upUndefined();
+      this.props.setFlag()
     }
     if (this.props.currentChecker !== undefined) {
       let currentPosition = +this.props.currentChecker.getAttribute('data-location'),
