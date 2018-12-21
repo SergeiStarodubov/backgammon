@@ -8,12 +8,13 @@ class App extends React.Component {
     super();
     this.whiteCheckers = [565,530,495,460,425,390,355,320,285,250,215,180,145,110]; // location of checkers
     this.blackCheckers = [10,45,80,115,150,185,220,255,290,325,360,395,430,465];
-    this.flag = true; // to border and unborder a checker
+
   }
   state = {
     valueDice1: undefined,
     valueDice2: undefined,
     currentChecker: undefined,
+    flag: true
   }
   setDiceUndefined = (dice) => {
     if (dice === 'dice1') {
@@ -32,32 +33,24 @@ class App extends React.Component {
   }
 
   setFlag = () => { // using it in <Field/>
-    this.flag = true;
+    this.state.flag = true;
+    this.setState({flag: this.state.flag});
   }
 
   chooseChecker = (e) => {
     if (this.state.valueDice1 !== undefined || this.state.valueDice2 !== undefined) {
-      // if (this.state.currentChecker !== undefined && e.target.classList.contains('white') && this.state.currentChecker !== e.target) {
-      //   const css = getComputedStyle(e.target);
-      //   this.state.currentChecker.style.top = (+css.top.slice(0,3) - 35) + 'px';
-      //   this.state.currentChecker.style.left = css.left;
-      //   this.state.currentChecker.setAttribute ('data-location' , e.target.getAttribute('data-location'));
-      //   if (e.target.getAttribute('data-location') == this.state.valueDice1) this.setDiceUndefined('dice1');
-      //   else if (e.target.getAttribute('data-location') == this.state.valueDice2) this.setDiceUndefined('dice2');
-      //   this.undefinedCurrentChecker();
-      //   console.log(this.state.valueDice1, this.state.valueDice2);
-      // }
-      if (e.target.style.border === '' && this.flag === true) {
+      if (this.state.flag === true) {
         let allWhiteCheckers = document.querySelectorAll('.white');
         allWhiteCheckers.forEach((checker) => {checker.style.border = ''});
         e.target.style.border = '1px solid white';
         this.state.currentChecker = e.target;
         this.setState({currentChecker: this.state.currentChecker});
-        this.flag = false;
-      } else if (e.target.style.border === '1px solid white' ) {
+        this.state.flag = false;
+        this.setState({flag: this.state.flag});
+      } else if (this.state.flag === false) {
         e.target.style.border = '';
         this.undefinedCurrentChecker();
-        this.flag = true;
+        this.setFlag();
       }
     }
   }
