@@ -16,7 +16,8 @@ class App extends React.Component {
     valueDice2: undefined,
     currentChecker: undefined,
     flag: true, // to choose a checker in current time
-    possibleMoves: -1
+    possibleMoves: -1,
+    home: true //if it is true you can take from the home, else you cannot
   }
 
   setDiceUndefined = (dice) => {
@@ -32,16 +33,21 @@ class App extends React.Component {
   getValue =(a,b) => { // to get the of dices in the component <Dice/>
     this.state.valueDice1 = a;
     this.state.valueDice2 = b;
-    this.setState({valueDice1: a,valueDice2: b })
+    this.setState({valueDice1: a,valueDice2: b})
   }
 
   setFlag = () => { // using it in <Field/>
     this.state.flag = true;
     this.setState({flag: this.state.flag});
   }
+  setHome = (bool) => {
+    if (bool === false) this.state.currentChecker.classList.remove('home');
+    this.state.home = bool;
+    this.setState({home: bool});
+  }
 
   chooseChecker = (e) => {
-    if ((this.state.valueDice1 !== undefined || this.state.valueDice2 !== undefined) && this.state.possibleMoves > 0) {
+    let pushChecker =() => {
       if (this.state.flag === true) {
         let allWhiteCheckers = document.querySelectorAll('.white');
         allWhiteCheckers.forEach((checker) => {checker.style.border = ''});
@@ -55,6 +61,14 @@ class App extends React.Component {
         this.undefinedCurrentChecker();
         this.setFlag();
       }
+    }
+    if ((this.state.valueDice1 !== undefined || this.state.valueDice2 !== undefined) && this.state.possibleMoves > 0) {
+      if (this.state.home === true && e.target.classList.contains('home')) {
+        pushChecker();
+      } else if (!e.target.classList.contains('home')){
+        pushChecker();
+      }
+
     }
   }
 
@@ -79,7 +93,7 @@ class App extends React.Component {
 
   render() {
     const whiteCheckers = this.whiteCheckers.map((item, index) => {
-      return <div key = {index} style = {{top: item +'px'}} className = 'white' onClick = {this.chooseChecker} data-location = '0' ></div>
+      return <div key = {index} style = {{top: item +'px'}} className = 'white home' onClick = {this.chooseChecker} data-location = '0' ></div>
     });
     return (
       <>
@@ -87,6 +101,7 @@ class App extends React.Component {
       moving = {this.moving}
       setMoving = {this.setMoving}
       getValue = {this.getValue}
+      setHome = {this.setHome}
       />
       <Field
       currentChecker = {this.state.currentChecker}
@@ -97,6 +112,7 @@ class App extends React.Component {
       setFlag = {this.setFlag}
       deleteOneStep = {this.deleteOneStep}
       possibleMoves = {this.state.possibleMoves}
+      setHome = {this.setHome}
       />
       {whiteCheckers}
       </>

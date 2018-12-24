@@ -63,6 +63,7 @@ class Dice extends React.Component {
           this.props.getValue(this.state.valueFirstDice, this.state.valueSecondDice);
           if (this.state.valueFirstDice === this.state.valueSecondDice) this.props.setMoving(4);
           else this.props.setMoving(2);
+          this.props.setHome(true);
         }, 500)
       });
   }

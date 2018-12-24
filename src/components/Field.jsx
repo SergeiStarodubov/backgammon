@@ -48,6 +48,7 @@ class Field extends React.Component {
     }
     // moving of the checker
     const moveChecker = () => {
+      if (this.props.currentChecker.classList.contains('home'))this.props.setHome(false);
       const css = getComputedStyle(e.target);
       this.props.currentChecker.style.top = css.top;
       this.props.currentChecker.style.left = css.left;
@@ -61,7 +62,7 @@ class Field extends React.Component {
       x = +x.join('');
       y.splice(-2,2);
       y = +y.join('');
-      y-= 35;
+      (y > 300) ? y-= 35 : y+= 35; // depencing of where the cell is located
       let string = JSON.stringify([x,y,e.target.getAttribute('data-place')])
       this.state.newPlaces.push(string);
       this.setState({newPlaces: this.state.newPlaces});
@@ -83,7 +84,7 @@ class Field extends React.Component {
         cleaner();
       }
 
-    } else if (this.props.currentChecker !== undefined && this.props.dice1 === this.props.dice2) { //if dice eaqual each other
+    } else if (this.props.currentChecker !== undefined && this.props.dice1 === this.props.dice2) { //if dices eaqual each other
       let currentPosition = +this.props.currentChecker.getAttribute('data-location'),
       wantedPosition = +e.target.getAttribute('data-place');
       if ((wantedPosition - currentPosition) === (+this.props.dice1)) {
@@ -101,7 +102,7 @@ class Field extends React.Component {
   }
   render() {
     const cells = this.divs.map((item, index) => {
-      return <div id = {item} data-place = {(item === 'blackHomeEnd' || item === 'whiteHomeEnd')? null : item.substr(4)} key = {index} className = 'cells' onClick = {this.startMove}></div>;
+      return <div id = {item} data-place = {(item === 'blackHomeEnd')? null :(item === 'whiteHomeEnd')? '25' : item.substr(4)} key = {index} className = 'cells' onClick = {this.startMove}></div>;
     });
     const newPlaces = this.state.newPlaces.map((block, index) => {
       block = JSON.parse(block);
