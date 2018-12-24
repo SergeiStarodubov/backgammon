@@ -82,7 +82,8 @@ class Field extends React.Component {
         this.props.deleteOneStep();
         cleaner();
       }
-    } else if (this.props.currentChecker !== undefined && this.props.dice1 === this.props.dice2) {
+
+    } else if (this.props.currentChecker !== undefined && this.props.dice1 === this.props.dice2) { //if dice eaqual each other
       let currentPosition = +this.props.currentChecker.getAttribute('data-location'),
       wantedPosition = +e.target.getAttribute('data-place');
       if ((wantedPosition - currentPosition) === (+this.props.dice1)) {
