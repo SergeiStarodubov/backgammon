@@ -27,7 +27,6 @@ class Dice extends React.Component {
   }
 
   throwCube = () => {
-    this.throwButton.current.disabled = true;
     let timer = (s) => {
       setTimeout(() => {
          this.state.positionFirstDice = this.cube[this.randomNumber(1,7)];
@@ -39,16 +38,16 @@ class Dice extends React.Component {
     };
     let promise = () => {
       return new Promise ((solve) => {
-        timer(600);
+        timer(100);
         solve();
       });
     };
     promise()
-      .then(() => timer(800))
-      .then(() => timer(1200))
-      .then(() => timer(1500))
-      .then(() => timer(1800))
-      .then(() => timer(2100))
+      .then(() => timer(150))
+      .then(() => timer(150))
+      .then(() => timer(100))
+      .then(() => timer(100))
+      .then(() => timer(200))
       .then(() => {
         setTimeout(() => {
           for (let key in this.cube) {
@@ -62,10 +61,10 @@ class Dice extends React.Component {
             }
           }
           this.props.getValue(this.state.valueFirstDice, this.state.valueSecondDice);
-          this.throwButton.current.disabled = false;
-        },2500)
+          if (this.state.valueFirstDice === this.state.valueSecondDice) this.props.setMoving(4);
+          else this.props.setMoving(2);
+        }, 500)
       });
-
   }
 
   render() {
@@ -73,7 +72,7 @@ class Dice extends React.Component {
       <>
         <div className ='dices' style = {{backgroundPosition: this.state.positionFirstDice}}></div>
         <div className ='dices' style = {{backgroundPosition: this.state.positionSecondDice}}></div>
-        <p><button id = 'throw' ref = {this.throwButton} onClick = {this.throwCube}>throw dices</button></p>
+        <p><button id = 'throw' ref = {this.throwButton} onClick = {this.throwCube} disabled = {this.props.moving()}>throw dices</button></p>
       </>
     );
   }

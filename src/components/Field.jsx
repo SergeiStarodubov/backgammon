@@ -18,28 +18,36 @@ class Field extends React.Component {
     newPlaces: []
   }
   startMove = (e) => {
+    // function to clear areas needed to get stepped
     const cleaner = () => {
       let allPlaces = document.querySelectorAll('.place');
       for (let i = 0; i < allPlaces.length; i++) {
-        let [currentPlaceX, currentPlaceY] = [allPlaces[i].getBoundingClientRect().left, allPlaces[i].getBoundingClientRect().top];
-        if (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('place')) {
+        //coordinates current cell
+        let [currentPlaceX, currentPlaceY] = [allPlaces[i].getBoundingClientRect().left, allPlaces[i].getBoundingClientRect().top],
+        //coordinates down cell
+            anyPlace = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('place')),
+            anyCell = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('cells'));
+
+        if (anyPlace || anyCell) {
           const css = getComputedStyle(allPlaces[i]);
+          //finding ccs top and left of the cell, and also its position attribute
           let [y,x] = [css.top.split(''), css.left.split('')];
           x.splice(-2,2);
           x = +x.join('');
           y.splice(-2,2);
           y = +y.join('');
           let position = allPlaces[i].getAttribute('data-place');
-          let com = [x,y,position];
-          com = JSON.stringify(com);
-          let index = this.state.newPlaces.indexOf(com);
+          //compare it with similar litaral in this.state.newPlaces. If it equals others one delete this.
+          let tmp = [x,y,position];
+          tmp = JSON.stringify(tmp);
+          let index = this.state.newPlaces.indexOf(tmp);
           this.state.newPlaces.splice(index, 1);
           this.setState({newPlaces: this.state.newPlaces});
         }
       }
     }
+    // moving of the checker
     const moveChecker = () => {
-      // moving of the checker
       const css = getComputedStyle(e.target);
       this.props.currentChecker.style.top = css.top;
       this.props.currentChecker.style.left = css.left;
@@ -59,18 +67,34 @@ class Field extends React.Component {
       this.setState({newPlaces: this.state.newPlaces});
     }
 
-    if (this.props.currentChecker !== undefined) {
+    if (this.props.currentChecker !== undefined && this.props.dice1 !== this.props.dice2) {
       let currentPosition = +this.props.currentChecker.getAttribute('data-location'),
       wantedPosition = +e.target.getAttribute('data-place');
       if ((wantedPosition - currentPosition) === (+this.props.dice1)) {
         moveChecker();
         this.props.setDiceUndefined('dice1');
+        this.props.deleteOneStep();
         cleaner();
       }
       if ((wantedPosition - currentPosition) === (+this.props.dice2))  {
         moveChecker();
         this.props.setDiceUndefined('dice2');
+        this.props.deleteOneStep();
         cleaner();
+      }
+    } else if (this.props.currentChecker !== undefined && this.props.dice1 === this.props.dice2) {
+      let currentPosition = +this.props.currentChecker.getAttribute('data-location'),
+      wantedPosition = +e.target.getAttribute('data-place');
+      if ((wantedPosition - currentPosition) === (+this.props.dice1)) {
+        if (this.props.possibleMoves <= 0) {
+          this.props.setDiceUndefined('dice1');
+          this.props.setDiceUndefined('dice2');
+          cleaner();
+        } else {
+          this.props.deleteOneStep();
+          moveChecker();
+          cleaner();
+        }
       }
     }
   }

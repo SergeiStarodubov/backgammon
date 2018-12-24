@@ -10,12 +10,15 @@ class App extends React.Component {
     this.blackCheckers = [10,45,80,115,150,185,220,255,290,325,360,395,430,465];
 
   }
+
   state = {
     valueDice1: undefined,
     valueDice2: undefined,
     currentChecker: undefined,
-    flag: true
+    flag: true, // to choose a checker in current time
+    possibleMoves: -1
   }
+
   setDiceUndefined = (dice) => {
     if (dice === 'dice1') {
       this.state.valueDice1 = undefined;
@@ -38,7 +41,7 @@ class App extends React.Component {
   }
 
   chooseChecker = (e) => {
-    if (this.state.valueDice1 !== undefined || this.state.valueDice2 !== undefined) {
+    if ((this.state.valueDice1 !== undefined || this.state.valueDice2 !== undefined) && this.state.possibleMoves > 0) {
       if (this.state.flag === true) {
         let allWhiteCheckers = document.querySelectorAll('.white');
         allWhiteCheckers.forEach((checker) => {checker.style.border = ''});
@@ -54,25 +57,48 @@ class App extends React.Component {
       }
     }
   }
+
   undefinedCurrentChecker = () => { //to set this.state.currentChecker is undefined
     this.state.currentChecker = undefined;
     this.setState({currentChecker: this.state.currentChecker});
   }
+//the group is to handle #throw -> button.disabled -----------------
+  moving = () => {
+    if (+this.state.possibleMoves <= 0) return false;
+    else return true;
+  }
+  deleteOneStep = () => {
+    this.state.possibleMoves--;
+    this.setState({possibleMoves: this.state.possibleMoves});
+  }
+  setMoving = num => {
+    this.state.possibleMoves = Number(num);
+    this.setState({possibleMoves: this.state.possibleMoves});
+  }
+// ----------------------------------------------------------------
 
   render() {
     const whiteCheckers = this.whiteCheckers.map((item, index) => {
       return <div key = {index} style = {{top: item +'px'}} className = 'white' onClick = {this.chooseChecker} data-location = '0' ></div>
     });
-    const blackCheckers = this.blackCheckers.map((item, index) => {
-      return <div key = {index} style = {{top: item + 'px'}} className = 'black'></div>
-    });
-
     return (
       <>
-      <Dice getValue = {this.getValue}/>
-      <Field currentChecker = {this.state.currentChecker} upUndefined = {this.undefinedCurrentChecker} dice1 = {this.state.valueDice1} dice2 = {this.state.valueDice2} setDiceUndefined = {this.setDiceUndefined} setFlag = {this.setFlag}/>
+      <Dice
+      moving = {this.moving}
+      setMoving = {this.setMoving}
+      getValue = {this.getValue}
+      />
+      <Field
+      currentChecker = {this.state.currentChecker}
+      upUndefined = {this.undefinedCurrentChecker}
+      dice1 = {this.state.valueDice1}
+      dice2 = {this.state.valueDice2}
+      setDiceUndefined = {this.setDiceUndefined}
+      setFlag = {this.setFlag}
+      deleteOneStep = {this.deleteOneStep}
+      possibleMoves = {this.state.possibleMoves}
+      />
       {whiteCheckers}
-      {blackCheckers}
       </>
     );
   }
