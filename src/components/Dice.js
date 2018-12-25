@@ -75,10 +75,13 @@ class Dice extends React.Component {
         <div className ='dices' style = {{backgroundPosition: this.state.positionFirstDice}}></div>
         <div className ='dices' style = {{backgroundPosition: this.state.positionSecondDice}}></div>
         <p><button id = 'throw' ref = {this.throwButton} onClick = {this.throwCube} disabled = {this.props.moving()}>throw dices</button></p>
-        <p><button id = 'skip'>skip move</button></p>
+        <p><button id = 'skip' onClick = {this.props.setMoving.bind(null, -1)}>skip move</button></p>
         <BlackUser
           whoseMove = {this.props.whoseMove}
           setWhoseMove = {this.props.setWhoseMove}
+          throwCube = {this.throwCube}
+          valueDice1 = {this.state.valueFirstDice}
+          valueDice2 = {this.state.valueSecondDice}
         />
       </>
     );

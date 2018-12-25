@@ -93,6 +93,7 @@ class App extends React.Component {
   setWhoseMove = user => {
     (user === 'white') ? this.setState({whoseMove: 'white'}) : this.setState({whoseMove: 'black'});
   }
+  
   render() {
     const whiteCheckers = this.whiteCheckers.map((item, index) => {
       return <div key = {index} style = {{top: item +'px'}} className = 'white home' onClick = {this.chooseChecker} data-location = '0' ></div>

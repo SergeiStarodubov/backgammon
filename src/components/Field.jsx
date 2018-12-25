@@ -36,7 +36,7 @@ class Field extends React.Component {
             anyDownCell = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('cells')),
             anyUpPlace = (document.elementFromPoint(currentPlaceX+5, currentPlaceY - 25).classList.contains('forstep')),
             anyUpCell = (document.elementFromPoint(currentPlaceX+5, currentPlaceY - 25).classList.contains('cells'));
-        if (anyDownPlace || anyDownCell || anyUpCell || anyUpPlace) {
+        if ((anyDownPlace || anyDownCell) && allPlaces[i].classList.contains('down')) {
           const css = getComputedStyle(allPlaces[i]);
           //finding ccs top and left of the cell, and also its position attribute
           let [y,x] = [css.top.split(''), css.left.split('')];
@@ -51,7 +51,22 @@ class Field extends React.Component {
           let index = this.state.newPlaces.indexOf(tmp);
           this.state.newPlaces.splice(index, 1);
           this.setState({newPlaces: this.state.newPlaces});
-        }
+        } else if ((anyUpCell || anyUpPlace) && allPlaces[i].classList.contains('up')) {
+            const css = getComputedStyle(allPlaces[i]);
+            //finding ccs top and left of the cell, and also its position attribute
+            let [y,x] = [css.top.split(''), css.left.split('')];
+            x.splice(-2,2);
+            x = +x.join('');
+            y.splice(-2,2);
+            y = +y.join('');
+            let position = allPlaces[i].getAttribute('data-place');
+            //compare it with similar litaral in this.state.newPlaces. If it equals others one delete this.
+            let tmp = [x,y,position];
+            tmp = JSON.stringify(tmp);
+            let index = this.state.newPlaces.indexOf(tmp);
+            this.state.newPlaces.splice(index, 1);
+            this.setState({newPlaces: this.state.newPlaces});
+          }
       }
     } ///-------------------------------------------------------------------------------------
 
@@ -123,11 +138,11 @@ class Field extends React.Component {
     let setNumber = setPositionForBlackUser();
     // ======================================================
     const cells = this.divs.map((item, index) => {
-      return <div id = {item} data-place = {(item === 'blackHomeEnd')? null :(item === 'whiteHomeEnd')? '25' : item.substr(4)} key = {index} className = 'cells' onClick = {this.startMove} data-placeblack = {(item === 'whiteHomeEnd')? null : setNumber()}></div>;
+      return <div id = {item} data-place = {(item === 'blackHomeEnd')? null :(item === 'whiteHomeEnd') ? '25' : item.substr(4)} key = {index}  className = {(index < 13)? 'down cells' : 'up cells'} onClick = {this.startMove} data-placeblack = {(item === 'whiteHomeEnd')? null : setNumber()}></div>;
     });
     const newPlaces = this.state.newPlaces.map((block, index) => {
       block = JSON.parse(block);
-      return <div className = 'cells forstep' key = {index} style = {{left: block[0], top: block[1]}} onClick = {this.startMove} data-place = {block[2]} ></div>
+      return <div className = {(block[1] < 300) ? 'cells forstep up' : 'cells forstep down'} key = {index} style = {{left: block[0], top: block[1]}} onClick = {this.startMove} data-place = {block[2]} ></div>
     });
 
       return (
