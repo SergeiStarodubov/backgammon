@@ -1,5 +1,6 @@
 import React from 'react';
 import style from '../styles/dice.css';
+import BlackUser from './BlackUser.jsx';
 
 class Dice extends React.Component {
   constructor() {
@@ -74,6 +75,11 @@ class Dice extends React.Component {
         <div className ='dices' style = {{backgroundPosition: this.state.positionFirstDice}}></div>
         <div className ='dices' style = {{backgroundPosition: this.state.positionSecondDice}}></div>
         <p><button id = 'throw' ref = {this.throwButton} onClick = {this.throwCube} disabled = {this.props.moving()}>throw dices</button></p>
+        <p><button id = 'skip'>skip move</button></p>
+        <BlackUser
+          whoseMove = {this.props.whoseMove}
+          setWhoseMove = {this.props.setWhoseMove}
+        />
       </>
     );
   }

@@ -3,12 +3,11 @@ import Dice from './components/Dice';
 import Styles from './App.css';
 import Field from './components/Field.jsx';
 
+
 class App extends React.Component {
   constructor(){
     super();
     this.whiteCheckers = [565,530,495,460,425,390,355,320,285,250,215,180,145,110]; // location of checkers
-    this.blackCheckers = [10,45,80,115,150,185,220,255,290,325,360,395,430,465];
-
   }
 
   state = {
@@ -17,7 +16,8 @@ class App extends React.Component {
     currentChecker: undefined,
     flag: true, // to choose a checker in current time
     possibleMoves: -1,
-    home: true //if it is true you can take from the home, else you cannot
+    home: true, //if it is true you can take from the home, else you cannot
+    whoseMove: 'white'
   }
 
   setDiceUndefined = (dice) => {
@@ -90,7 +90,9 @@ class App extends React.Component {
     this.setState({possibleMoves: this.state.possibleMoves});
   }
 // ----------------------------------------------------------------
-
+  setWhoseMove = user => {
+    (user === 'white') ? this.setState({whoseMove: 'white'}) : this.setState({whoseMove: 'black'});
+  }
   render() {
     const whiteCheckers = this.whiteCheckers.map((item, index) => {
       return <div key = {index} style = {{top: item +'px'}} className = 'white home' onClick = {this.chooseChecker} data-location = '0' ></div>
@@ -102,6 +104,8 @@ class App extends React.Component {
       setMoving = {this.setMoving}
       getValue = {this.getValue}
       setHome = {this.setHome}
+      whoseMove = {this.state.whoseMove}
+      setWhoseMove = {this.setWhoseMove}
       />
       <Field
       currentChecker = {this.state.currentChecker}
@@ -113,6 +117,8 @@ class App extends React.Component {
       deleteOneStep = {this.deleteOneStep}
       possibleMoves = {this.state.possibleMoves}
       setHome = {this.setHome}
+      setWhoseMove = {this.setWhoseMove}
+      whoseMove = {this.state.whoseMove}
       />
       {whiteCheckers}
       </>

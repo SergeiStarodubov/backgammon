@@ -18,17 +18,25 @@ class Field extends React.Component {
     newPlaces: []
   }
   startMove = (e) => {
-    // function to clear areas needed to get stepped
+    //===============================================
+    const giveRightToMoveToBlackUser = () => {
+      if (this.props.possibleMoves === 1) {
+        this.props.setWhoseMove('black');
+      }
+    }
+ //==================================================
+ // function to clear areas needed to get stepped -------------
     const cleaner = () => {
-      let allPlaces = document.querySelectorAll('.place');
+      let allPlaces = document.querySelectorAll('.forstep');
       for (let i = 0; i < allPlaces.length; i++) {
         //coordinates current cell
         let [currentPlaceX, currentPlaceY] = [allPlaces[i].getBoundingClientRect().left, allPlaces[i].getBoundingClientRect().top],
         //coordinates down cell
-            anyPlace = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('place')),
-            anyCell = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('cells'));
-
-        if (anyPlace || anyCell) {
+            anyDownPlace = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('forstep')),
+            anyDownCell = (document.elementFromPoint(currentPlaceX+5, currentPlaceY + 40).classList.contains('cells')),
+            anyUpPlace = (document.elementFromPoint(currentPlaceX+5, currentPlaceY - 25).classList.contains('forstep')),
+            anyUpCell = (document.elementFromPoint(currentPlaceX+5, currentPlaceY - 25).classList.contains('cells'));
+        if (anyDownPlace || anyDownCell || anyUpCell || anyUpPlace) {
           const css = getComputedStyle(allPlaces[i]);
           //finding ccs top and left of the cell, and also its position attribute
           let [y,x] = [css.top.split(''), css.left.split('')];
@@ -45,10 +53,11 @@ class Field extends React.Component {
           this.setState({newPlaces: this.state.newPlaces});
         }
       }
-    }
+    } ///-------------------------------------------------------------------------------------
+
     // moving of the checker
     const moveChecker = () => {
-      if (this.props.currentChecker.classList.contains('home'))this.props.setHome(false);
+      if (this.props.currentChecker.classList.contains('home')) this.props.setHome(false);
       const css = getComputedStyle(e.target);
       this.props.currentChecker.style.top = css.top;
       this.props.currentChecker.style.left = css.left;
@@ -66,6 +75,7 @@ class Field extends React.Component {
       let string = JSON.stringify([x,y,e.target.getAttribute('data-place')])
       this.state.newPlaces.push(string);
       this.setState({newPlaces: this.state.newPlaces});
+      giveRightToMoveToBlackUser();
     }
 
     if (this.props.currentChecker !== undefined && this.props.dice1 !== this.props.dice2) {
@@ -100,14 +110,26 @@ class Field extends React.Component {
       }
     }
   }
+
   render() {
+    //to set cell-position for black user ===================
+    let setPositionForBlackUser = () => {
+      let i = 13;
+      return () => {
+        (i === 26) ? i = 1 : i = i;
+        return i++;
+      }
+    }
+    let setNumber = setPositionForBlackUser();
+    // ======================================================
     const cells = this.divs.map((item, index) => {
-      return <div id = {item} data-place = {(item === 'blackHomeEnd')? null :(item === 'whiteHomeEnd')? '25' : item.substr(4)} key = {index} className = 'cells' onClick = {this.startMove}></div>;
+      return <div id = {item} data-place = {(item === 'blackHomeEnd')? null :(item === 'whiteHomeEnd')? '25' : item.substr(4)} key = {index} className = 'cells' onClick = {this.startMove} data-placeblack = {(item === 'whiteHomeEnd')? null : setNumber()}></div>;
     });
     const newPlaces = this.state.newPlaces.map((block, index) => {
       block = JSON.parse(block);
-      return <div className = 'cells place' key = {index} style = {{left: block[0], top: block[1]}} onClick = {this.startMove} data-place = {block[2]}></div>
+      return <div className = 'cells forstep' key = {index} style = {{left: block[0], top: block[1]}} onClick = {this.startMove} data-place = {block[2]} ></div>
     });
+
       return (
         <>
         {cells}
