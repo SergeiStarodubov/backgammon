@@ -33,7 +33,7 @@ class App extends React.Component {
   getValue =(a,b) => { // to get the of dices in the component <Dice/>
     this.state.valueDice1 = a;
     this.state.valueDice2 = b;
-    this.setState({valueDice1: a,valueDice2: b})
+    this.setState({valueDice1: a, valueDice2: b})
   }
 
   setFlag = () => { // using it in <Field/>
@@ -68,7 +68,6 @@ class App extends React.Component {
       } else if (!e.target.classList.contains('home')){
         pushChecker();
       }
-
     }
   }
 
@@ -93,7 +92,7 @@ class App extends React.Component {
   setWhoseMove = user => {
     (user === 'white') ? this.setState({whoseMove: 'white'}) : this.setState({whoseMove: 'black'});
   }
-  
+
   render() {
     const whiteCheckers = this.whiteCheckers.map((item, index) => {
       return <div key = {index} style = {{top: item +'px'}} className = 'white home' onClick = {this.chooseChecker} data-location = '0' ></div>
@@ -107,6 +106,7 @@ class App extends React.Component {
       setHome = {this.setHome}
       whoseMove = {this.state.whoseMove}
       setWhoseMove = {this.setWhoseMove}
+      possibleMoves = {this.state.possibleMoves}
       />
       <Field
       currentChecker = {this.state.currentChecker}

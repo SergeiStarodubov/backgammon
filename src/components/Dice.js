@@ -69,19 +69,36 @@ class Dice extends React.Component {
       });
   }
 
+  throwCubeForBlackUser = () => {
+    let  num1, num2;
+    num1 = this.randomNumber(1,7);
+    num2 = this.randomNumber(1,7);
+    // this.state.positionFirstDice = this.cube[num1];
+    this.setState({positionFirstDice: this.cube[num1]});
+    // this.state.positionSecondDice = this.cube[num2];
+    this.setState({positionSecondDice: this.cube[num2]});
+    // this.state.valueFirstDice = num1;
+    this.setState({valueFirstDice: num1});
+    // this.state.valueSecondDice = num2;
+    this.setState({valueSecondDice: num2});
+    this.props.getValue(this.state.valueFirstDice, this.state.valueSecondDice);
+  }
+
   render() {
     return (
       <>
-        <div className ='dices' style = {{backgroundPosition: this.state.positionFirstDice}}></div>
-        <div className ='dices' style = {{backgroundPosition: this.state.positionSecondDice}}></div>
+        <div className ='dices' style = {{backgroundPosition: this.state.positionFirstDice}} ></div>
+        <div className ='dices' style = {{backgroundPosition: this.state.positionSecondDice}} ></div>
         <p><button id = 'throw' ref = {this.throwButton} onClick = {this.throwCube} disabled = {this.props.moving()}>throw dices</button></p>
         <p><button id = 'skip' onClick = {this.props.setMoving.bind(null, -1)}>skip move</button></p>
         <BlackUser
           whoseMove = {this.props.whoseMove}
           setWhoseMove = {this.props.setWhoseMove}
-          throwCube = {this.throwCube}
+          throwCube = {this.throwCubeForBlackUser}
           valueDice1 = {this.state.valueFirstDice}
           valueDice2 = {this.state.valueSecondDice}
+          setMoving = {this.props.setMoving}
+          possibleMoves = {this.props.possibleMoves}
         />
       </>
     );
